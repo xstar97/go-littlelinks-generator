@@ -27,7 +27,7 @@ jobs:
           cp go.sum ./build
           cp ./cmd/main.go ./build/cmd/
           cp -R ./internal/* ./build/internal/
-
+          
       - name: Install dependencies
         run: |
           cd build
@@ -40,7 +40,9 @@ jobs:
           go build -ldflags "-w -s" -o ./littlelinks-generator cmd/main.go
 
       - name: Upload Release Artifacts
-        uses: actions/upload-artifact@v2
+        id: upload-release
+        uses: softprops/action-gh-release@v1
         with:
-          name: release
-          path: ./build/littlelinks-generator
+          files: |
+            ./build/littlelinks-generator
+          tag_name: ${{ github.ref }}

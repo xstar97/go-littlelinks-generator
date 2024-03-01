@@ -46,3 +46,6 @@ jobs:
           files: |
             ./build/littlelinks-generator
           tag_name: ${{ github.ref }}
+          update: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

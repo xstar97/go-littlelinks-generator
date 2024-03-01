@@ -1,37 +1,32 @@
-name: Release Build
+name: Release Go project
 
 on:
   push:
     tags:
-      - "v*.*.*"
-    paths:
-      - .github/workflows/build.yml
-      - cmd/**
-      - internal/**
-      - go.mod
-      - go.sum
+      - "v*.*.*" # triggers only if push new tag version, like `0.8.4` or else
 
 jobs:
   build:
+    name: GoReleaser build
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
 
-      - name: Setup Go
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # See: https://goreleaser.com/ci/actions/
+
+      - name: Set up Go 1.14
         uses: actions/setup-go@v2
         with:
-          go-version: '1.22'
+          go-version: 1.14
+        id: go
 
-      - name: Build
-        run: go build -ldflags "-w -s" -o littlelinks-generator
-
-      - name: Zip build artifacts
-        run: |
-          zip -r littlelinks-generator.zip littlelinks-generator
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v2
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@master
         with:
-          name: littlelinks-generator
-          path: littlelinks-generator.zip
+          version: latest
+          args: release --rm-dist
+          workdir: ./cmd/main.go #
+        env:
+          GITHUB_TOKEN: ${{ secrets.GO_RELEASER_GITHUB_TOKEN  }}

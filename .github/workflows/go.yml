@@ -24,11 +24,12 @@ jobs:
 
       - name: Copy files to build directory
         run: |
-          mkdir -p build
+          mkdir -p build/cmd
+          mkdir -p build/internal
           cp go.mod ./build
           cp go.sum ./build
-          cp -R ./cmd/main.go ./build/cmd/main.go
-          cp -R ./internal/* ./build/internal
+          cp ./cmd/main.go ./build/cmd/
+          cp -R ./internal/* ./build/internal/
 
       - name: Install dependencies
         run: |

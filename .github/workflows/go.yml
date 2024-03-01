@@ -20,7 +20,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17
+          go-version: 1.22
 
       - name: Copy files to build directory
         run: |
@@ -38,7 +38,7 @@ jobs:
 
       - name: Build Binary
         run: |
-          cd build
+          cd ./build
           go build -ldflags "-w -s" -o ./littlelinks-generator cmd/main.go
 
       - name: Upload Release Artifacts

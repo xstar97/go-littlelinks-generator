@@ -40,12 +40,10 @@ jobs:
           go build -ldflags "-w -s" -o ./littlelinks-generator cmd/main.go
 
       - name: Upload Release Artifacts
-        id: upload-release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            ./build/littlelinks-generator
+          files: ./build/littlelinks-generator
           tag_name: ${{ github.ref }}
-          update: true
+          append_body: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

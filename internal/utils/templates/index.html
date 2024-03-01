@@ -1,0 +1,67 @@
+<!-- Template -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Page Information
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>{{META_TITLE}}</title>
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <meta name="author" content="{{META_AUTHOR}}">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+
+    <!-- Themes:
+            Auto:   css/skeleton-auto.css
+            Light:  css/skeleton-light.css
+            Dark:   css/skeleton-dark.css
+     -->
+    <link rel="stylesheet" href="css/skeleton-{{META_THEME}}.css">
+
+    <!-- Brand Styles -->
+    <link rel="stylesheet" href="css/brands.css">
+
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="{{META_ICON_URL}}">
+
+</head>
+
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="column" style="margin-top: 10%">
+
+        <!-- Your Image Here -->
+        <img src="{{BIO_ICON_URL}}" class="avatar" alt="{{BIO_TITLE}}">
+
+        <!-- Title -->
+        <h1 role="heading">{{BIO_TITLE}}</h1>
+
+        <!-- Short Bio -->
+        <p>{{BIO_DESCRIPTION}}</p>
+
+        <!-- Link Button List -->
+{{BIO_BUTTONS}}
+        <br> 
+        <p>{{BIO_FOOTER}}</p>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

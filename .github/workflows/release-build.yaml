@@ -27,6 +27,6 @@ jobs:
         with:
           version: latest
           args: release --rm-dist
-          workdir: cmd/main.go #
+          workdir: . # Set the workdir to the root of the Go module
         env:
-          GITHUB_TOKEN: ${{ secrets.GO_RELEASER_GITHUB_TOKEN  }}
+          GITHUB_TOKEN: ${{ secrets.GO_RELEASER_GITHUB_TOKEN }}

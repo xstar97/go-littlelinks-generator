@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
 	"github.com/xstar97/go-littlelinks-generator/internal/config"
 )
 
 // GenerateRedirects generates a _redirects file based on the redirects in the links JSON
-func GenerateRedirects(links *Links) error {
+func GenerateRedirects(conf *Config) error {
 
 	// Create the _redirects file
 	redirectsFilePath := filepath.Join(config.BUILD_DIR, config.REDIRECTS_FILE)
@@ -19,7 +20,7 @@ func GenerateRedirects(links *Links) error {
 	defer redirectsFile.Close()
 
 	// Write the redirects to the _redirects file
-	for _, link := range links.Links {
+	for _, link := range conf.Links {
 		for _, redirect := range link.Redirects {
 			fmt.Printf("%s %s %d\n", redirect.Src, redirect.Dest, redirect.Code)
 			_, err := redirectsFile.WriteString(fmt.Sprintf("%s %s %d\n", redirect.Src, redirect.Dest, redirect.Code))

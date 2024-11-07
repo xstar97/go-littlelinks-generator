@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"path/filepath"
+
 	"github.com/xstar97/go-littlelinks-generator/internal/config"
 	"github.com/xstar97/go-littlelinks-generator/internal/utils"
 )
@@ -10,38 +12,40 @@ import (
 func main() {
 	// Define flags for asset path and config file
 	assetPathFlag := flag.String("asset-path", "assets/", "Path to the assets directory")
-	configFlag := flag.String("config", "links.json", "Path to the configuration file")
+	configFlag := flag.String("config", "links.json", "Path to the configuration file (JSON or YAML)")
 	flag.Parse()
 
 	assetsPath := *assetPathFlag
-	linksPath := assetsPath + *configFlag
+	linksPath := filepath.Join(assetsPath, *configFlag)
 
-	// Parse the links JSON file
-	links, err := utils.ParseLinksJSON(linksPath)
+	// Parse the config file (supports JSON or YAML)
+	conf, err := utils.ParseConfigData(linksPath)
 	if err != nil {
-		fmt.Println("Error parsing links JSON:", err)
+		fmt.Printf("Error parsing config file (%s): %v\n", filepath.Ext(linksPath), err)
 		return
 	}
-	utils.ParseConfig(links)
+
+	// Process the config data
+	utils.ParseConfig(conf)
 
 	// Delete the build directory if it exists
 	deleteBuildDir()
 
 	// Download the latest release
-	err = utils.DownloadLatestRelease(links.DownloadTagVer)
+	err = utils.DownloadLatestRelease(config.DOWNLOAD_TAG_DEF_VER)
 	if err != nil {
 		fmt.Println("Error downloading latest release:", err)
 		return
 	}
 
 	// Generate HTML based on the configuration file
-	generateHtml(links)
+	generateHtml(conf)
 
 	// Check if redirects are enabled
-	generateRedirect(links)
+	generateRedirect(conf)
 
 	// Copy any assets if found
-	utils.ValidateAndCopyLinksAssets(links, assetsPath)
+	utils.ValidateAndCopyLinksAssets(conf, assetsPath)
 
 	// Delete files
 	utils.CleanUpBuildFiles()
@@ -54,9 +58,9 @@ func deleteBuildDir() {
 	}
 }
 
-func generateHtml(links *utils.Links) {
+func generateHtml(conf *utils.Config) {
 	// Generate HTML based on the configuration file
-	genErr := utils.GenerateHTML(links)
+	genErr := utils.GenerateHTML(conf)
 	if genErr != nil {
 		fmt.Println("Error generating HTML:", genErr)
 		return
@@ -64,12 +68,12 @@ func generateHtml(links *utils.Links) {
 	fmt.Println("\nHTML generation completed successfully.")
 }
 
-func generateRedirect(links *utils.Links) {
+func generateRedirect(conf *utils.Config) {
 	// Check if redirects are enabled
-	if links.EnableRedirects {
+	if conf.EnableRedirects {
 		fmt.Println("\nRedirects feature is enabled; generating _redirects...")
 		// Generate redirects
-		err := utils.GenerateRedirects(links)
+		err := utils.GenerateRedirects(conf)
 		if err != nil {
 			fmt.Println("Error generating redirects:", err)
 			return

@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
 	"github.com/xstar97/go-littlelinks-generator/internal/config"
 )
+
 func DeleteBuildDirectory(outputPath string) error {
 	// Check if the build directory exists
 	if _, err := os.Stat(outputPath); os.IsNotExist(err) {
@@ -24,9 +26,9 @@ func DeleteBuildDirectory(outputPath string) error {
 	return nil
 }
 
-func ParseConfig(links *Links) {
+func ParseConfig(conf *Config) {
 	// Print the parsed links as JSON string with 4-tab spaces
-	linksJSON, err := json.MarshalIndent(links, "", "    ") // 4 spaces for indentation
+	linksJSON, err := json.MarshalIndent(conf, "", "    ") // 4 spaces for indentation
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
@@ -60,6 +62,7 @@ func CleanUpBuildFiles() error {
 	}
 	return nil
 }
+
 // checks if a directory exists and creates it if it doesn't.
 func EnsureDirExists(dirPath string) error {
 	if _, err := os.Stat(dirPath); os.IsNotExist(err) {
